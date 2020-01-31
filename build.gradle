@@ -28,6 +28,7 @@ dependencies {
 	compile 'org.springframework.boot:spring-boot-starter-security'
 	compile 'org.springframework.boot:spring-boot-starter-actuator'
 	compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+	implementation 'org.liquibase:liquibase-core:3.8.2'
 }
 
 test {

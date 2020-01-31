@@ -19,8 +19,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 
-import org.hibernate.annotations.Table;
-import org.springframework.data.annotation.Id;
+import java.io.Serializable;
 
 /**
  * Represents Phones Table on the Database
@@ -30,16 +29,25 @@ import org.springframework.data.annotation.Id;
  * @since 1.0.0
  */
 @Entity
-@Table(appliesTo = "T_PHONES")
+@Table(name = "T_PHONES")
 @Data
-public class PhoneEntity {
+public class PhoneEntity implements Serializable {
 
     @Id
     @Column(name = "phone_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long phoneId;
 
     @ManyToOne
     @JoinColumn(name="user_id", nullable=false)
     private UserEntity user;
+
+    @Column(name = "number")
+    private String number;
+
+    @Column(name = "city_code")
+    private String cityCode;
+
+    @Column(name = "contry_code")
+    private String contryCode;
 }

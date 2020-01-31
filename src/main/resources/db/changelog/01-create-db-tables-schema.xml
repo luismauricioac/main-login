@@ -1,0 +1,59 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <changeSet author="Luis Alamo" id="01">
+
+        <createTable remarks="Used to store user's information"
+                     tableName="T_USERS">
+            <column name="user_id" type="INT">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="first_name" type="VARCHAR(50)">
+                <constraints nullable="false" />
+            </column>
+            <column name="last_name" type="VARCHAR(50)">
+                <constraints nullable="false" />
+            </column>
+            <column name="email" type="VARCHAR(100)">
+                <constraints nullable="false" unique="true" />
+            </column>
+            <column name="password" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="created" type="TIMESTAMP">
+                <constraints nullable="false" />
+            </column>
+            <column name="modified" type="TIMESTAMP">
+                <constraints nullable="false" />
+            </column>
+            <column name="last_login" type="TIMESTAMP"/>
+            <column name="is_active" type="BOOLEAN"/>
+            <column name="token" type="VARCHAR(255)"/>
+            <column name="uuid" type="VARCHAR(255)"/>
+        </createTable>
+
+        <createTable remarks="Used to store user's phones"
+                     tableName="T_PHONES">
+            <column name="phone_id" type="INT">
+                <constraints primaryKey="true" nullable="false" />
+            </column>
+            <column name="user_id" type="INT" />
+            <column name="number" type="varchar(50)">
+                <constraints nullable="false" />
+            </column>
+            <column name="city_code" type="varchar(10)">
+                <constraints nullable="false" />
+            </column>
+            <column name="contry_code" type="varchar(10)">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="T_PHONES"
+                                 baseColumnNames="user_id" constraintName="users_fk"
+                                 referencedTableName="T_USERS" referencedColumnNames="user_id" />
+    </changeSet>
+</databaseChangeLog>

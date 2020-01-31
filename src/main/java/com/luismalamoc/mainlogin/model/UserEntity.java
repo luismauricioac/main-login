@@ -15,14 +15,16 @@
  */
 package com.luismalamoc.mainlogin.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 
-import org.hibernate.annotations.Table;
-import org.springframework.data.annotation.Id;
-
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 /**
@@ -33,14 +35,15 @@ import java.util.Set;
  * @since 1.0.0
  */
 @Entity
-@Table(appliesTo = "T_USERS")
+@Table(name = "T_USERS")
 @Data
 public class UserEntity implements Serializable {
 
     @Id
     @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @JsonIgnore
+    private Long userId;
 
     @Column(name="first_name")
     private String firstName;
@@ -52,6 +55,7 @@ public class UserEntity implements Serializable {
     private String email;
 
     @Column(name="password")
+    @JsonIgnore
     private String password;
 
     @OneToMany(cascade=CascadeType.ALL)
@@ -59,17 +63,23 @@ public class UserEntity implements Serializable {
     private Set<PhoneEntity> phones;
 
     @Column(name="created")
-    private String created;
+    @CreationTimestamp
+    private LocalDateTime created;
 
     @Column(name="modified")
-    private String modified;
+    @UpdateTimestamp
+    private LocalDateTime modified;
 
     @Column(name="last_login")
-    private String lastLogin;
+    private LocalDateTime lastLogin;
 
     @Column(name="is_active")
     private boolean isActive;
 
     @Column(name="token")
     private String token;
+
+    @Column(name="uuid")
+    @JsonProperty("id")
+    private String uuid;
 }

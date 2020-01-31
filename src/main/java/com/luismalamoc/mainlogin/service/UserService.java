@@ -15,10 +15,13 @@
  */
 package com.luismalamoc.mainlogin.service;
 
+import com.luismalamoc.mainlogin.exception.DuplicatedUserException;
 import com.luismalamoc.mainlogin.model.UserEntity;
 import com.luismalamoc.mainlogin.repository.UserRepository;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.UUID;
 
 /**
  * Service for Users Table
@@ -36,9 +39,15 @@ public class UserService {
     @Autowired
     TokenService tokenService;
 
-    public UserEntity create(UserEntity entity) {
+    public UserEntity create(UserEntity entity) throws DuplicatedUserException {
+        UserEntity newEntity = null;
         entity.setToken(tokenService.generateToken(entity));
-        UserEntity newEntity = repository.save(entity);
+        entity.setUuid(UUID.randomUUID().toString());
+        try {
+            newEntity = repository.save(entity);
+        } catch (ConstraintViolationException e) {
+            throw new DuplicatedUserException(e);
+        }
         return newEntity;
     }
 

@@ -15,11 +15,13 @@
  */
 package com.luismalamoc.mainlogin.controller;
 
+import com.luismalamoc.mainlogin.exception.DuplicatedUserException;
 import com.luismalamoc.mainlogin.model.UserEntity;
 import com.luismalamoc.mainlogin.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,8 +41,8 @@ public class UserController {
     @Autowired
     private UserService service;
 
-    @PostMapping
-    public ResponseEntity<UserEntity> create(UserEntity user) {
+    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<UserEntity> create(UserEntity user) throws DuplicatedUserException {
         UserEntity created = service.create(user);
         return new ResponseEntity<UserEntity>(created, new HttpHeaders(), HttpStatus.OK);
     }
