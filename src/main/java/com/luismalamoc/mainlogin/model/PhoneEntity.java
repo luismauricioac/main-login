@@ -15,6 +15,8 @@
  */
 package com.luismalamoc.mainlogin.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -40,14 +42,17 @@ public class PhoneEntity implements Serializable {
 
     @ManyToOne
     @JoinColumn(name="user_id", nullable=false)
+    @JsonIgnore
     private UserEntity user;
 
     @Column(name = "number")
     private String number;
 
     @Column(name = "city_code")
+    @JsonProperty("city_code")
     private String cityCode;
 
     @Column(name = "contry_code")
+    @JsonProperty("contry_code")
     private String contryCode;
 }

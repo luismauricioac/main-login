@@ -22,6 +22,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -46,16 +48,23 @@ public class UserEntity implements Serializable {
     private Long userId;
 
     @Column(name="first_name")
+    @NotEmpty
+    @JsonProperty("first_name")
     private String firstName;
 
     @Column(name="last_name")
+    @NotEmpty
+    @JsonProperty("last_name")
     private String lastName;
 
     @Column(name="email", unique = true)
+    @NotEmpty
+    @Email(message = "${validation.unique.email}")
     private String email;
 
     @Column(name="password")
-    @JsonIgnore
+    @NotEmpty
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @OneToMany(cascade=CascadeType.ALL)

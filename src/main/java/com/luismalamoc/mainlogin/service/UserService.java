@@ -19,7 +19,10 @@ import com.luismalamoc.mainlogin.exception.DuplicatedUserException;
 import com.luismalamoc.mainlogin.model.UserEntity;
 import com.luismalamoc.mainlogin.repository.UserRepository;
 import org.hibernate.exception.ConstraintViolationException;
+import org.jasypt.util.password.BasicPasswordEncryptor;
+import org.jasypt.util.password.StrongPasswordEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.UUID;
 
@@ -43,12 +46,14 @@ public class UserService {
         UserEntity newEntity = null;
         entity.setToken(tokenService.generateToken(entity));
         entity.setUuid(UUID.randomUUID().toString());
-        try {
-            newEntity = repository.save(entity);
-        } catch (ConstraintViolationException e) {
-            throw new DuplicatedUserException(e);
-        }
+        entity.setPassword(this.encryptPasswd(entity.getPassword()));
+        newEntity = repository.save(entity);
         return newEntity;
+    }
+
+    private String encryptPasswd(String userPwd){
+        BasicPasswordEncryptor passwordEncryptor = new BasicPasswordEncryptor();
+        return passwordEncryptor.encryptPassword(userPwd);
     }
 
 }

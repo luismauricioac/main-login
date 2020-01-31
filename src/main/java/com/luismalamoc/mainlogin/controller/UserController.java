@@ -24,6 +24,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -42,7 +43,7 @@ public class UserController {
     private UserService service;
 
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<UserEntity> create(UserEntity user) throws DuplicatedUserException {
+    public ResponseEntity<UserEntity> create(@RequestBody UserEntity user) throws DuplicatedUserException {
         UserEntity created = service.create(user);
         return new ResponseEntity<UserEntity>(created, new HttpHeaders(), HttpStatus.OK);
     }
