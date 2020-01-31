@@ -16,30 +16,38 @@
 package com.luismalamoc.mainlogin.service;
 
 import com.luismalamoc.mainlogin.model.UserEntity;
-import com.luismalamoc.mainlogin.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 /**
- * Service for Users Table
+ * Token handling service
  *
  * @version 1.0.0
  * @author Luis Mauricio Alamo - luismalamoc@gmail.com
  * @since 1.0.0
  */
 @Service
-public class UserService {
+public class TokenService {
 
-    @Autowired
-    UserRepository repository;
+    @Value("${app.token.secretKey}")
+    private String secretKey;
 
-    @Autowired
-    TokenService tokenService;
+    @Value("${app.token.expiration}")
+    private Long expiration;
 
-    public UserEntity create(UserEntity entity) {
-        entity.setToken(tokenService.generateToken(entity));
-        UserEntity newEntity = repository.save(entity);
-        return newEntity;
+    @Value("${app.token.issuerInfo}")
+    private String issuerInfo;
+
+    public String generateToken(UserEntity user) {
+        return Jwts.builder()
+                .setIssuedAt(new Date()).setIssuer(issuerInfo)
+                .setSubject(user.getEmail())
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                .signWith(SignatureAlgorithm.HS512, secretKey)
+                .compact();
     }
 
 }

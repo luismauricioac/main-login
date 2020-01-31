@@ -40,9 +40,9 @@ public class UserController {
     private UserService service;
 
     @PostMapping
-    public ResponseEntity<UserEntity> createOrUpdate(UserEntity user) {
-        UserEntity updated = service.createOrUpdate(user);
-        return new ResponseEntity<UserEntity>(updated, new HttpHeaders(), HttpStatus.OK);
+    public ResponseEntity<UserEntity> create(UserEntity user) {
+        UserEntity created = service.create(user);
+        return new ResponseEntity<UserEntity>(created, new HttpHeaders(), HttpStatus.OK);
     }
 
 }
