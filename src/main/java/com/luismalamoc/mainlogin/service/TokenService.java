@@ -15,7 +15,7 @@
  */
 package com.luismalamoc.mainlogin.service;
 
-import com.luismalamoc.mainlogin.model.UserEntity;
+import com.luismalamoc.mainlogin.entity.UserEntity;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;

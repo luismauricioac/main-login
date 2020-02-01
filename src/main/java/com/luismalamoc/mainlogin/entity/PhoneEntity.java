@@ -13,15 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.luismalamoc.mainlogin.model;
+package com.luismalamoc.mainlogin.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 /**
  * Represents Phones Table on the Database
@@ -36,9 +38,10 @@ import java.io.Serializable;
 public class PhoneEntity implements Serializable {
 
     @Id
-    @Column(name = "phone_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long phoneId;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(name = "id", updatable = false, nullable = false)
+    private UUID id;
 
     @ManyToOne
     @JoinColumn(name="user_id", nullable=false)

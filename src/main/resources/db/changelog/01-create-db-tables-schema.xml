@@ -8,7 +8,7 @@
 
         <createTable remarks="Used to store user's information"
                      tableName="T_USERS">
-            <column name="user_id" type="INT">
+            <column name="id" type="VARCHAR(36)">
                 <constraints primaryKey="true" nullable="false" />
             </column>
             <column name="first_name" type="VARCHAR(50)">
@@ -32,15 +32,14 @@
             <column name="last_login" type="TIMESTAMP"/>
             <column name="is_active" type="BOOLEAN"/>
             <column name="token" type="VARCHAR(255)"/>
-            <column name="uuid" type="VARCHAR(255)"/>
         </createTable>
 
         <createTable remarks="Used to store user's phones"
                      tableName="T_PHONES">
-            <column name="phone_id" type="INT">
+            <column name="id" type="VARCHAR(36)">
                 <constraints primaryKey="true" nullable="false" />
             </column>
-            <column name="user_id" type="INT" />
+            <column name="user_id" type="VARCHAR(36)" />
             <column name="number" type="varchar(50)">
                 <constraints nullable="false" />
             </column>
@@ -54,6 +53,6 @@
 
         <addForeignKeyConstraint baseTableName="T_PHONES"
                                  baseColumnNames="user_id" constraintName="users_fk"
-                                 referencedTableName="T_USERS" referencedColumnNames="user_id" />
+                                 referencedTableName="T_USERS" referencedColumnNames="id" />
     </changeSet>
 </databaseChangeLog>

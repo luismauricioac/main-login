@@ -13,18 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.luismalamoc.mainlogin.repository;
+package com.luismalamoc.mainlogin.validator;
 
-import com.luismalamoc.mainlogin.entity.UserEntity;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
 /**
- * Repository Interface for Users Table
+ * Validator to have the right and secure password
  *
  * @version 1.0.0
  * @author Luis Mauricio Alamo - luismalamoc@gmail.com
  * @since 1.0.0
  */
-@Repository
-public interface UserRepository extends JpaRepository<UserEntity, Long> {}
+public class SecurePasswordValidator implements ConstraintValidator<SecurePassword, String> {
+
+    private String VALID_PASSWD_PATTERN = "^[A-Z]{1}[a-z]{1,}[0-9]{2}";
+
+    @Override
+    public boolean isValid(String password, ConstraintValidatorContext context) {
+        return password.matches(VALID_PASSWD_PATTERN);
+    }
+}

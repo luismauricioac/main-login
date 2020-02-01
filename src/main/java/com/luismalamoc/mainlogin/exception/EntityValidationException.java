@@ -13,20 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.luismalamoc.mainlogin.model;
-
-import lombok.Builder;
-import lombok.Data;
-
+package com.luismalamoc.mainlogin.exception;
 /**
- * Data Model for Error Messages
+ * Entity Validation Exceptions
  *
  * @version 1.0.0
  * @author Luis Mauricio Alamo - luismalamoc@gmail.com
  * @since 1.0.0
  */
-@Data
-@Builder
-public class ErrorModel {
-    private String message;
+public class EntityValidationException extends Exception {
+
+    public EntityValidationException(String problem) {
+        super(problem);
+    }
 }

@@ -13,18 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.luismalamoc.mainlogin.repository;
+package com.luismalamoc.mainlogin.validator;
 
-import com.luismalamoc.mainlogin.entity.UserEntity;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
+import javax.validation.Constraint;
+import javax.validation.Payload;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 /**
- * Repository Interface for Users Table
+ * Interface Annotation for Secure Password validation
  *
  * @version 1.0.0
  * @author Luis Mauricio Alamo - luismalamoc@gmail.com
  * @since 1.0.0
  */
-@Repository
-public interface UserRepository extends JpaRepository<UserEntity, Long> {}
+@Target({ElementType.METHOD, ElementType.FIELD})
+@Retention(RetentionPolicy.RUNTIME)
+@Constraint(validatedBy = SecurePasswordValidator.class)
+public @interface SecurePassword {
+    String message() default "user.passwd.mask";
+    Class<?>[] groups() default {};
+    Class<? extends Payload>[] payload() default {};
+}

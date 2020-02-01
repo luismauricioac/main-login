@@ -13,18 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.luismalamoc.mainlogin.repository;
+package com.luismalamoc.mainlogin.helper;
 
-import com.luismalamoc.mainlogin.entity.UserEntity;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.jasypt.util.password.BasicPasswordEncryptor;
 
 /**
- * Repository Interface for Users Table
+ * Encrypt Utilities
  *
  * @version 1.0.0
  * @author Luis Mauricio Alamo - luismalamoc@gmail.com
  * @since 1.0.0
  */
-@Repository
-public interface UserRepository extends JpaRepository<UserEntity, Long> {}
+public class EncryptHelper {
+
+    public static String encryptPasswd(String userPwd){
+        BasicPasswordEncryptor passwordEncryptor = new BasicPasswordEncryptor();
+        return passwordEncryptor.encryptPassword(userPwd);
+    }
+}

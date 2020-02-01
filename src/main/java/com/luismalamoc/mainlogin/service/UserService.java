@@ -15,16 +15,18 @@
  */
 package com.luismalamoc.mainlogin.service;
 
-import com.luismalamoc.mainlogin.exception.DuplicatedUserException;
-import com.luismalamoc.mainlogin.model.UserEntity;
+import com.luismalamoc.mainlogin.entity.UserEntity;
+import com.luismalamoc.mainlogin.exception.EntityValidationException;
+import com.luismalamoc.mainlogin.model.UserCredentialsModel;
 import com.luismalamoc.mainlogin.repository.UserRepository;
-import org.hibernate.exception.ConstraintViolationException;
-import org.jasypt.util.password.BasicPasswordEncryptor;
-import org.jasypt.util.password.StrongPasswordEncryptor;
+import com.luismalamoc.mainlogin.helper.EncryptHelper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import java.util.UUID;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
+import java.time.LocalDateTime;
+import java.util.Set;
 
 /**
  * Service for Users Table
@@ -42,18 +44,34 @@ public class UserService {
     @Autowired
     TokenService tokenService;
 
-    public UserEntity create(UserEntity entity) throws DuplicatedUserException {
+    @Autowired
+    Validator validator;
+
+    public UserEntity create(UserEntity entity) throws EntityValidationException {
+        this.doValidationPassword(entity);
+        this.doValidationEverythingElse(entity);
         UserEntity newEntity = null;
         entity.setToken(tokenService.generateToken(entity));
-        entity.setUuid(UUID.randomUUID().toString());
-        entity.setPassword(this.encryptPasswd(entity.getPassword()));
+        entity.setPassword(EncryptHelper.encryptPasswd(entity.getPassword()));
+        entity.setLastLogin(LocalDateTime.now());
+        entity.setActive(true);
         newEntity = repository.save(entity);
         return newEntity;
     }
 
-    private String encryptPasswd(String userPwd){
-        BasicPasswordEncryptor passwordEncryptor = new BasicPasswordEncryptor();
-        return passwordEncryptor.encryptPassword(userPwd);
+    private void doValidationPassword(UserEntity entity) throws EntityValidationException {
+        Set<ConstraintViolation<UserCredentialsModel>> result = validator.validate(UserCredentialsModel.builder()
+                .password(entity.getPassword()).build());
+        if (!result.isEmpty()) {
+            throw new EntityValidationException(result.iterator().next().getMessage());
+        }
+    }
+
+    private void doValidationEverythingElse(UserEntity entity) throws EntityValidationException {
+        Set<ConstraintViolation<UserEntity>> result = validator.validate(entity);
+        if (!result.isEmpty()) {
+            throw new EntityValidationException(result.iterator().next().getMessage());
+        }
     }
 
 }

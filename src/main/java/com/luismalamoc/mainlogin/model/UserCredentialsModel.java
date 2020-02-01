@@ -13,27 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.luismalamoc.mainlogin.exception;
+package com.luismalamoc.mainlogin.model;
+
+import com.luismalamoc.mainlogin.validator.SecurePassword;
+import lombok.Builder;
+import lombok.Data;
+
+import javax.validation.constraints.NotEmpty;
 
 /**
- * Duplicated User Exception
+ * Represents Model of User Credentials
  *
  * @version 1.0.0
  * @author Luis Mauricio Alamo - luismalamoc@gmail.com
  * @since 1.0.0
  */
-public class DuplicatedUserException extends Exception {
+@Data
+@Builder
+public class UserCredentialsModel {
 
-    public DuplicatedUserException() {
-        super();
-    }
-    public DuplicatedUserException(String message, Throwable cause) {
-        super(message, cause);
-    }
-    public DuplicatedUserException(String message) {
-        super(message);
-    }
-    public DuplicatedUserException(Throwable cause) {
-        super(cause);
-    }
+    private String username;
+
+    @NotEmpty
+    @SecurePassword
+    private String password;
 }

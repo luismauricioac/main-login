@@ -62,14 +62,18 @@ What things you need to install the software and how to install them
 
 ```
 {
-	"first_name": "Juan",
-	"last_name": "Rodriguez",
-	"email": "juan@rodriguez.org",
+	"first_name": "Tony",
+	"last_name": "Stark",
+	"email": "tony.stark@starkindustries.com",
 	"password": "123456Ab",
 	"phones": [{
-		"number": "933883443",
+		"number": "999888777",
 		"city_code": "",
 		"contry_code": "56"
+	},{
+		"number": "999888777",
+		"city_code": "",
+		"contry_code": "58"
 	}]
 }
 ```

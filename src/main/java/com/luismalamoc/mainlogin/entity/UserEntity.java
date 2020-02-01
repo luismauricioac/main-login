@@ -13,21 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.luismalamoc.mainlogin.model;
+package com.luismalamoc.mainlogin.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * Represents Users Table on the Database
@@ -42,24 +45,26 @@ import java.util.Set;
 public class UserEntity implements Serializable {
 
     @Id
-    @Column(name = "user_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonIgnore
-    private Long userId;
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(name = "id", updatable = false, nullable = false)
+    private UUID id;
 
     @Column(name="first_name")
-    @NotEmpty
+    @NotNull(message = "user.first_name.empty")
+    @Size(min = 3, max = 50, message = "user.first_name.size")
     @JsonProperty("first_name")
     private String firstName;
 
     @Column(name="last_name")
-    @NotEmpty
+    @NotNull(message = "user.last_name.empty")
+    @Size(min = 3, max = 50, message = "user.last_name.size")
     @JsonProperty("last_name")
     private String lastName;
 
     @Column(name="email", unique = true)
-    @NotEmpty
-    @Email(message = "${validation.unique.email}")
+    @NotNull(message = "user.email.empty")
+    @Email(message = "user.email.mask")
     private String email;
 
     @Column(name="password")
@@ -87,8 +92,4 @@ public class UserEntity implements Serializable {
 
     @Column(name="token")
     private String token;
-
-    @Column(name="uuid")
-    @JsonProperty("id")
-    private String uuid;
 }
