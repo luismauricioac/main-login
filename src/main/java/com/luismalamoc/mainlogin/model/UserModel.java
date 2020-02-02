@@ -13,71 +13,63 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.luismalamoc.mainlogin.entity;
+package com.luismalamoc.mainlogin.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Builder;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.luismalamoc.mainlogin.validator.SecurePassword;
+import com.luismalamoc.mainlogin.validator.UniqueEmail;
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.*;
-import java.io.Serializable;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
 
 /**
- * Represents Users Table on the Database
+ * Represents Users Model Request
  *
  * @version 1.0.0
  * @author Luis Mauricio Alamo - luismalamoc@gmail.com
  * @since 1.0.0
  */
-@Entity
-@Table(name = "T_USERS")
 @Data
-@Builder
-public class UserEntity implements Serializable {
+public class UserModel {
 
-    @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
-    @Column(name="first_name")
+    @NotNull(message = "{user.first_name.empty}")
+    @Size(min = 3, max = 50, message = "{user.first_name.size}")
+    @JsonProperty("first_name")
     private String firstName;
 
-    @Column(name="last_name")
+    @NotNull(message = "{user.last_name.empty")
+    @Size(min = 3, max = 50, message = "{user.last_name.size}")
+    @JsonProperty("last_name")
     private String lastName;
 
-    @Column(name="email", unique = true)
+    @NotNull(message = "{user.email.empty}")
+    @Email(message = "{user.email.mask}")
+    @UniqueEmail
     private String email;
 
-    @Column(name="password")
-    @JsonIgnore
+    @NotNull(message = "{user.passwd.empty}")
+    @SecurePassword
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-    @OneToMany(cascade=CascadeType.ALL)
-    @JoinColumn(name="user_id")
-    private Set<PhoneEntity> phones;
+    private Set<PhoneModel> phones;
 
-    @Column(name="created")
-    @CreationTimestamp
     private LocalDateTime created;
 
-    @Column(name="modified")
-    @UpdateTimestamp
     private LocalDateTime modified;
 
-    @Column(name="last_login")
+    @JsonProperty("last_login")
     private LocalDateTime lastLogin;
 
-    @Column(name="is_active")
+    @JsonProperty("is_active")
     private boolean isActive;
 
-    @Column(name="token")
     private String token;
 }

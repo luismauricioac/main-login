@@ -13,47 +13,42 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.luismalamoc.mainlogin.entity;
+package com.luismalamoc.mainlogin.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Builder;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.luismalamoc.mainlogin.entity.UserEntity;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.UUID;
 
 /**
- * Represents Phones Table on the Database
+ * Represents Phones Model Request
  *
  * @version 1.0.0
  * @author Luis Mauricio Alamo - luismalamoc@gmail.com
  * @since 1.0.0
  */
-@Entity
-@Table(name = "T_PHONES")
 @Data
-@Builder
-public class PhoneEntity implements Serializable {
+public class PhoneModel implements Serializable {
 
-    @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
 
-    @ManyToOne
-    @JoinColumn(name="user_id", nullable=false)
-    @JsonIgnore
-    private UserEntity user;
-
-    @Column(name = "number")
+    @NotNull(message = "{phone.number.empty}")
+    @Size(min = 3, max = 50, message = "{phone.number.size}")
     private String number;
 
-    @Column(name = "city_code")
+    @JsonProperty("city_code")
     private String cityCode;
 
-    @Column(name = "contry_code")
+    @NotNull(message = "{phone.contry_code.empty}")
+    @Size(min = 1, max = 50, message = "{phone.number.size}")
+    @JsonProperty("contry_code")
     private String contryCode;
 }

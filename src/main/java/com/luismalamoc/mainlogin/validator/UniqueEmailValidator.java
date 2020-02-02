@@ -13,28 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.luismalamoc.mainlogin.model;
+package com.luismalamoc.mainlogin.validator;
 
-import com.luismalamoc.mainlogin.validator.SecurePassword;
-import lombok.Builder;
-import lombok.Data;
+import com.luismalamoc.mainlogin.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
 
 /**
- * Represents Model of User Credentials
+ * Validator to count if the email exists into the database
  *
  * @version 1.0.0
  * @author Luis Mauricio Alamo - luismalamoc@gmail.com
  * @since 1.0.0
  */
-@Data
-@Builder
-public class UserCredentialsModel {
+public class UniqueEmailValidator implements ConstraintValidator<UniqueEmail, String> {
 
-    private String username;
+    @Autowired
+    UserRepository repository;
 
-    @NotEmpty
-    @SecurePassword
-    private String password;
+    @Override
+    public boolean isValid(String email, ConstraintValidatorContext context) {
+        return repository.countByEmail(email) == Long.valueOf(0);
+    }
 }

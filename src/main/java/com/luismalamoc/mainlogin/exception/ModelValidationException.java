@@ -13,21 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.luismalamoc.mainlogin.repository;
-
-import com.luismalamoc.mainlogin.entity.UserEntity;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
+package com.luismalamoc.mainlogin.exception;
 /**
- * Repository Interface for Users Table
+ * Model Validation Exceptions
  *
  * @version 1.0.0
  * @author Luis Mauricio Alamo - luismalamoc@gmail.com
  * @since 1.0.0
  */
-@Repository
-public interface UserRepository extends JpaRepository<UserEntity, Long> {
+public class ModelValidationException extends Exception {
 
-    public long countByEmail(String email);
+    public ModelValidationException(String problem) {
+        super(problem);
+    }
 }

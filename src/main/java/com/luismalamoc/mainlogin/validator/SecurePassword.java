@@ -32,7 +32,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = SecurePasswordValidator.class)
 public @interface SecurePassword {
-    String message() default "user.passwd.mask";
+    String message() default "{user.passwd.mask}";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

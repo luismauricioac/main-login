@@ -16,7 +16,8 @@
 package com.luismalamoc.mainlogin.controller;
 
 import com.luismalamoc.mainlogin.entity.UserEntity;
-import com.luismalamoc.mainlogin.exception.EntityValidationException;
+import com.luismalamoc.mainlogin.exception.ModelValidationException;
+import com.luismalamoc.mainlogin.model.UserModel;
 import com.luismalamoc.mainlogin.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -43,7 +44,7 @@ public class UserController {
     private UserService service;
 
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<UserEntity> create(@RequestBody UserEntity user) throws EntityValidationException {
+    public ResponseEntity<UserEntity> create(@RequestBody UserModel user) throws ModelValidationException {
         UserEntity created = service.create(user);
         return new ResponseEntity<UserEntity>(created, new HttpHeaders(), HttpStatus.OK);
     }

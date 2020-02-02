@@ -15,7 +15,7 @@
  */
 package com.luismalamoc.mainlogin.service;
 
-import com.luismalamoc.mainlogin.entity.UserEntity;
+import com.luismalamoc.mainlogin.model.UserModel;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,7 +41,7 @@ public class TokenService {
     @Value("${app.token.issuerInfo}")
     private String issuerInfo;
 
-    public String generateToken(UserEntity user) {
+    public String generateToken(UserModel user) {
         return Jwts.builder()
                 .setIssuedAt(new Date()).setIssuer(issuerInfo)
                 .setSubject(user.getEmail())

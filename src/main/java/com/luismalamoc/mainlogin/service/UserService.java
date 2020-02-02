@@ -15,9 +15,11 @@
  */
 package com.luismalamoc.mainlogin.service;
 
+import com.luismalamoc.mainlogin.entity.PhoneEntity;
 import com.luismalamoc.mainlogin.entity.UserEntity;
-import com.luismalamoc.mainlogin.exception.EntityValidationException;
-import com.luismalamoc.mainlogin.model.UserCredentialsModel;
+import com.luismalamoc.mainlogin.exception.ModelValidationException;
+import com.luismalamoc.mainlogin.model.PhoneModel;
+import com.luismalamoc.mainlogin.model.UserModel;
 import com.luismalamoc.mainlogin.repository.UserRepository;
 import com.luismalamoc.mainlogin.helper.EncryptHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,7 @@ import org.springframework.stereotype.Service;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -47,31 +50,55 @@ public class UserService {
     @Autowired
     Validator validator;
 
-    public UserEntity create(UserEntity entity) throws EntityValidationException {
-        this.doValidationPassword(entity);
-        this.doValidationEverythingElse(entity);
-        UserEntity newEntity = null;
-        entity.setToken(tokenService.generateToken(entity));
-        entity.setPassword(EncryptHelper.encryptPasswd(entity.getPassword()));
-        entity.setLastLogin(LocalDateTime.now());
-        entity.setActive(true);
-        newEntity = repository.save(entity);
+    public UserEntity create(UserModel model) throws ModelValidationException {
+        this.doValidations(model);
+        this.fillPhones(model);
+        UserEntity newEntity = repository.save(
+                UserEntity.builder()
+                        .phones(this.fillPhones(model))
+                        .firstName(model.getFirstName())
+                        .lastName(model.getLastName())
+                        .email(model.getEmail())
+                        .password(EncryptHelper.encryptPasswd(model.getPassword()))
+                        .isActive(true)
+                        .lastLogin(LocalDateTime.now())
+                        .token(tokenService.generateToken(model))
+                        .build()
+        );
         return newEntity;
     }
 
-    private void doValidationPassword(UserEntity entity) throws EntityValidationException {
-        Set<ConstraintViolation<UserCredentialsModel>> result = validator.validate(UserCredentialsModel.builder()
-                .password(entity.getPassword()).build());
+    private void doValidations(UserModel model) throws ModelValidationException {
+        Set<ConstraintViolation<UserModel>> result = validator.validate(model);
         if (!result.isEmpty()) {
-            throw new EntityValidationException(result.iterator().next().getMessage());
+            throw new ModelValidationException(result.iterator().next().getMessage());
+        }
+        for (PhoneModel phone : model.getPhones())
+        {
+            this.doPhoneValidations(phone);
         }
     }
 
-    private void doValidationEverythingElse(UserEntity entity) throws EntityValidationException {
-        Set<ConstraintViolation<UserEntity>> result = validator.validate(entity);
+    private void doPhoneValidations(PhoneModel model) throws ModelValidationException {
+        Set<ConstraintViolation<PhoneModel>> result = validator.validate(model);
         if (!result.isEmpty()) {
-            throw new EntityValidationException(result.iterator().next().getMessage());
+            throw new ModelValidationException(result.iterator().next().getMessage());
         }
+    }
+
+    private Set<PhoneEntity> fillPhones(UserModel model){
+        Set<PhoneEntity> phones = new HashSet<PhoneEntity>();
+        for (PhoneModel phone : model.getPhones())
+        {
+            phones.add(
+                    PhoneEntity.builder()
+                            .number(phone.getNumber())
+                            .cityCode(phone.getCityCode())
+                            .contryCode(phone.getContryCode())
+                            .build()
+            );
+        }
+        return phones;
     }
 
 }

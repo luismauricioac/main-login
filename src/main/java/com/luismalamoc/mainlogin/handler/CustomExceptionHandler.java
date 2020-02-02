@@ -15,7 +15,7 @@
  */
 package com.luismalamoc.mainlogin.handler;
 
-import com.luismalamoc.mainlogin.exception.EntityValidationException;
+import com.luismalamoc.mainlogin.exception.ModelValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -35,7 +35,7 @@ import java.io.IOException;
 @ControllerAdvice
 class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(EntityValidationException.class)
+    @ExceptionHandler(ModelValidationException.class)
     public void handlePasswordException(HttpServletResponse response) throws IOException {
         response.sendError(HttpStatus.UNPROCESSABLE_ENTITY.value());
     }

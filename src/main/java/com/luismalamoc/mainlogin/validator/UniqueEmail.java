@@ -13,17 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.luismalamoc.mainlogin.exception;
+package com.luismalamoc.mainlogin.validator;
+
+import javax.validation.Constraint;
+import javax.validation.Payload;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 /**
- * Entity Validation Exceptions
+ * Interface Annotation for unique email in database validation
  *
  * @version 1.0.0
  * @author Luis Mauricio Alamo - luismalamoc@gmail.com
  * @since 1.0.0
  */
-public class EntityValidationException extends Exception {
-
-    public EntityValidationException(String problem) {
-        super(problem);
-    }
+@Target({ElementType.METHOD, ElementType.FIELD})
+@Retention(RetentionPolicy.RUNTIME)
+@Constraint(validatedBy = UniqueEmailValidator.class)
+public @interface UniqueEmail {
+    String message() default "{user.email.duplicated}";
+    Class<?>[] groups() default {};
+    Class<? extends Payload>[] payload() default {};
 }
