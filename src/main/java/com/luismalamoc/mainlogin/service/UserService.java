@@ -53,7 +53,7 @@ public class UserService {
     public UserEntity create(UserModel model) throws ModelValidationException {
         this.doValidations(model);
         this.fillPhones(model);
-        UserEntity newEntity = repository.save(
+        return repository.save(
                 UserEntity.builder()
                         .phones(this.fillPhones(model))
                         .firstName(model.getFirstName())
@@ -65,7 +65,6 @@ public class UserService {
                         .token(tokenService.generateToken(model))
                         .build()
         );
-        return newEntity;
     }
 
     private void doValidations(UserModel model) throws ModelValidationException {
@@ -87,7 +86,7 @@ public class UserService {
     }
 
     private Set<PhoneEntity> fillPhones(UserModel model){
-        Set<PhoneEntity> phones = new HashSet<PhoneEntity>();
+        Set<PhoneEntity> phones = new HashSet<>();
         for (PhoneModel phone : model.getPhones())
         {
             phones.add(

@@ -18,6 +18,7 @@ package com.luismalamoc.mainlogin.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.luismalamoc.mainlogin.validator.SecurePassword;
 import com.luismalamoc.mainlogin.validator.UniqueEmail;
+import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.Email;
@@ -35,6 +36,7 @@ import java.util.UUID;
  * @since 1.0.0
  */
 @Data
+@Builder
 public class UserModel {
 
     private UUID id;

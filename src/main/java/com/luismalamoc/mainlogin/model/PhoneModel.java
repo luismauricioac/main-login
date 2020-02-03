@@ -18,6 +18,7 @@ package com.luismalamoc.mainlogin.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.luismalamoc.mainlogin.entity.UserEntity;
+import lombok.Builder;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -36,6 +37,7 @@ import java.util.UUID;
  * @since 1.0.0
  */
 @Data
+@Builder
 public class PhoneModel implements Serializable {
 
     private UUID id;

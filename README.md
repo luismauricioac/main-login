@@ -1,64 +1,29 @@
 # Main Login
 
-One Paragraph of project description goes here
+Login and Register web-service API
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+This is a web-service example what I made for fun and to know my knowledge about Java by a certain company that I wanna get the job there 
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
+You need the following requirements installed
 
 ```
-Give examples
+gradle version 5 or upper
+java 1.8 or upper
 ```
 
 ### Installing
 
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
-
+You need simply to execute the gradle startup and go to http://localhost:8080/swagger-ui.html in the browser 
 ```
-Give the example
+gradle clean build
+gradle bootrun
 ```
 
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
-
-### Using
-
-What things you need to install the software and how to install them
+Then you can excute the User Register Request like this and enjoy it
 
 ```
 {
@@ -80,9 +45,9 @@ What things you need to install the software and how to install them
 
 ## Built With
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+* [SpringBoot](https://spring.io/projects/spring-boot) - The best framework for Java
+* [Gradle](https://gradle.org/) - Dependency Management
+
 
 ## Contributing
 
@@ -94,16 +59,10 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 ## Authors
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+* **Luis Alamo** - *Initial work* - [luismalamoc](https://github.com/luismalamoc)
 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+This project is licensed under the Apache License, Version 2.0 (the "License"); - see the [LICENSE.md](LICENSE.md) file for details
