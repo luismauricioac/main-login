@@ -19,6 +19,8 @@ import com.luismalamoc.mainlogin.entity.UserEntity;
 import com.luismalamoc.mainlogin.exception.ModelValidationException;
 import com.luismalamoc.mainlogin.model.UserModel;
 import com.luismalamoc.mainlogin.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -40,11 +42,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/user")
 public class UserController {
 
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+
     @Autowired
     private UserService service;
 
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE}, produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<UserEntity> create(@RequestBody UserModel user) throws ModelValidationException {
+        logger.info("Starting user register");
         UserEntity created = service.create(user);
         return new ResponseEntity<UserEntity>(created, new HttpHeaders(), HttpStatus.OK);
     }

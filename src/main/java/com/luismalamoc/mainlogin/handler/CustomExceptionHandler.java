@@ -16,6 +16,8 @@
 package com.luismalamoc.mainlogin.handler;
 
 import com.luismalamoc.mainlogin.exception.ModelValidationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -35,13 +37,17 @@ import java.io.IOException;
 @ControllerAdvice
 class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
+    private static final Logger logger = LoggerFactory.getLogger(CustomExceptionHandler.class);
+
     @ExceptionHandler(ModelValidationException.class)
-    public void handlePasswordException(HttpServletResponse response) throws IOException {
+    public void handlePasswordException(HttpServletResponse response, Exception e) throws IOException {
+        logger.info("A validation problem has happened: ".concat(e.getMessage()));
         response.sendError(HttpStatus.UNPROCESSABLE_ENTITY.value());
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
     public void handleViolationException(HttpServletResponse response, Exception e) throws IOException {
+        logger.info("A Database Integrity Violation has happened: ".concat(e.getMessage()));
         response.sendError(HttpStatus.UNPROCESSABLE_ENTITY.value());
     }
 }

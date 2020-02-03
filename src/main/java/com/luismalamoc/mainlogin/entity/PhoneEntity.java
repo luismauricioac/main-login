@@ -16,6 +16,7 @@
 package com.luismalamoc.mainlogin.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
@@ -51,9 +52,11 @@ public class PhoneEntity implements Serializable {
     @Column(name = "number")
     private String number;
 
+    @JsonProperty("city_code")
     @Column(name = "city_code")
     private String cityCode;
 
+    @JsonProperty("contry_code")
     @Column(name = "contry_code")
     private String contryCode;
 }

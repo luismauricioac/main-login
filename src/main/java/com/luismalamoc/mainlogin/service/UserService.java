@@ -22,6 +22,8 @@ import com.luismalamoc.mainlogin.model.PhoneModel;
 import com.luismalamoc.mainlogin.model.UserModel;
 import com.luismalamoc.mainlogin.repository.UserRepository;
 import com.luismalamoc.mainlogin.helper.EncryptHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +43,8 @@ import java.util.Set;
 @Service
 public class UserService {
 
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
+
     @Autowired
     UserRepository repository;
 
@@ -53,7 +57,8 @@ public class UserService {
     public UserEntity create(UserModel model) throws ModelValidationException {
         this.doValidations(model);
         this.fillPhones(model);
-        return repository.save(
+        logger.info("All validations passed");
+        UserEntity ret = repository.save(
                 UserEntity.builder()
                         .phones(this.fillPhones(model))
                         .firstName(model.getFirstName())
@@ -65,6 +70,8 @@ public class UserService {
                         .token(tokenService.generateToken(model))
                         .build()
         );
+        logger.info("New user was stored");
+        return ret;
     }
 
     private void doValidations(UserModel model) throws ModelValidationException {
